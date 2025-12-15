@@ -1,29 +1,14 @@
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-});
-
-export const metadata: Metadata = {
-  title: "isaac seiler",
-  description: "one-page site",
+export const metadata = {
+  title: "Isaac Seiler",
+  description: "Isaac Seiler",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.className}>
-      <body>
-        <div className="bg-hero" aria-hidden="true" />
-        {children}
-      </body>
+    <html lang="en">
+      <body>{children}</body>
     </html>
   );
 }
