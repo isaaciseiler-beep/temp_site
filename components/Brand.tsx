@@ -1,10 +1,14 @@
-// components/BrandMark.tsx — DROP-IN REPLACEMENT
+// components/Brand.tsx — DROP-IN REPLACEMENT
 "use client";
 
-export default function BrandMark() {
+import BrandMark from "./BrandMark";
+
+export default function Brand() {
   return (
-    <span className="text-white font-normal uppercase tracking-[0.22em]">
-      ISAAC SEILER
-    </span>
+    <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 select-none">
+      <div className="text-3xl sm:text-4xl leading-none">
+        <BrandMark />
+      </div>
+    </div>
   );
 }
