@@ -1,3 +1,4 @@
+// components/Menu.tsx — DROP-IN REPLACEMENT
 "use client";
 
 import { useState } from "react";
@@ -18,8 +19,7 @@ function UnderlineLabel({ children }: { children: React.ReactNode }) {
         aria-hidden
         className={[
           "pointer-events-none absolute left-0 -bottom-1 h-[2px] w-full",
-          "origin-left scale-x-0",
-          "bg-white/95",
+          "origin-left scale-x-0 bg-white/95",
           "transition-transform duration-[520ms]",
           "[transition-timing-function:cubic-bezier(0.2,1,0.2,1)]",
           "group-hover:scale-x-100",
@@ -59,6 +59,7 @@ export default function Menu() {
     <div className="w-full h-[100svh] flex items-center justify-center">
       <div className="w-full max-w-xl px-6 sm:px-10">
         <ul className="w-full space-y-3">
+          {/* bio */}
           <li className="w-full flex flex-col items-start">
             <button
               type="button"
@@ -91,6 +92,7 @@ export default function Menu() {
             </AnimatePresence>
           </li>
 
+          {/* resume */}
           <li className="w-full flex flex-col items-start">
             <button
               type="button"
@@ -124,6 +126,7 @@ export default function Menu() {
             </AnimatePresence>
           </li>
 
+          {/* linkedin */}
           <li className="w-full flex flex-col items-start">
             <a
               className={[hit, header, size, "group inline-flex items-center"].join(" ")}
@@ -136,6 +139,7 @@ export default function Menu() {
             </a>
           </li>
 
+          {/* contact */}
           <li className="w-full flex flex-col items-start">
             <a
               className={[hit, header, size, "group inline-flex items-center"].join(" ")}
@@ -146,7 +150,7 @@ export default function Menu() {
             </a>
           </li>
 
-          {/* pill: black/white dynamic shimmer on hover (non-linear, multi-direction) */}
+          {/* pill: b/w dynamic shimmer (no rotating rectangle) */}
           <li className="w-full pt-4">
             <a
               href="#"
@@ -160,65 +164,74 @@ export default function Menu() {
                 "overflow-hidden select-none",
               ].join(" ")}
             >
-              {/* base shimmer: layered conic + radial for “alive” motion */}
+              {/* layer 1: soft blobs + diagonal sheen, animated in x/y */}
               <span
                 aria-hidden
-                className="absolute inset-[-40%] opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                className="pointer-events-none absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                 style={{
                   backgroundImage: `
-                    radial-gradient(circle at 30% 30%, rgba(0,0,0,0.55), transparent 55%),
-                    radial-gradient(circle at 70% 60%, rgba(0,0,0,0.35), transparent 60%),
-                    conic-gradient(from 0deg, rgba(0,0,0,0.65), rgba(255,255,255,0.15), rgba(0,0,0,0.65), rgba(255,255,255,0.1), rgba(0,0,0,0.65))
+                    radial-gradient(circle at 20% 30%, rgba(0,0,0,0.35), transparent 60%),
+                    radial-gradient(circle at 75% 70%, rgba(0,0,0,0.22), transparent 62%),
+                    linear-gradient(115deg, rgba(0,0,0,0.28), rgba(255,255,255,0.18), rgba(0,0,0,0.22))
                   `,
-                  backgroundBlendMode: "multiply",
-                  filter: "contrast(1.25)",
-                  animation: "bw-drift 3.2s linear infinite",
+                  backgroundSize: "180% 180%, 190% 190%, 240% 240%",
+                  animation: "pill-drift-a 9.7s cubic-bezier(0.2, 1, 0.2, 1) infinite alternate",
                 }}
               />
 
-              {/* subtle grainy sweep layer */}
+              {/* layer 2: fine texture sweep with different period (breaks loop detectability) */}
               <span
                 aria-hidden
-                className="absolute inset-[-60%] opacity-0 group-hover:opacity-100 transition-opacity duration-200 mix-blend-overlay"
+                className="pointer-events-none absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 mix-blend-multiply"
                 style={{
                   backgroundImage:
-                    "repeating-linear-gradient(135deg, rgba(0,0,0,0.25) 0 6px, rgba(255,255,255,0.10) 6px 12px)",
-                  filter: "blur(0.2px)",
-                  animation: "bw-scrub 2.7s ease-in-out infinite alternate",
+                    "repeating-linear-gradient(135deg, rgba(0,0,0,0.10) 0 7px, rgba(255,255,255,0.06) 7px 14px)",
+                  backgroundSize: "220% 220%",
+                  animation: "pill-drift-b 13.3s ease-in-out infinite alternate",
                 }}
               />
 
-              <span className="relative z-10 transition-colors duration-200 group-hover:text-white">
-                NEW SITE COMING SOON
-              </span>
+              <span className="relative z-10">NEW SITE COMING SOON</span>
 
               <style jsx>{`
-                @keyframes bw-drift {
+                @keyframes pill-drift-a {
                   0% {
-                    transform: translate3d(-6%, -4%, 0) rotate(0deg);
+                    background-position: 10% 20%, 90% 85%, 0% 50%;
+                    transform: translate3d(-1%, -1%, 0);
                   }
                   25% {
-                    transform: translate3d(6%, -2%, 0) rotate(35deg);
+                    background-position: 85% 10%, 20% 80%, 100% 35%;
+                    transform: translate3d(1.2%, -0.6%, 0);
                   }
                   50% {
-                    transform: translate3d(3%, 6%, 0) rotate(95deg);
+                    background-position: 30% 95%, 70% 20%, 40% 100%;
+                    transform: translate3d(0.4%, 1.1%, 0);
                   }
                   75% {
-                    transform: translate3d(-5%, 3%, 0) rotate(155deg);
+                    background-position: 5% 45%, 95% 55%, 70% 0%;
+                    transform: translate3d(-1.1%, 0.6%, 0);
                   }
                   100% {
-                    transform: translate3d(-6%, -4%, 0) rotate(220deg);
+                    background-position: 75% 80%, 10% 10%, 0% 60%;
+                    transform: translate3d(1%, 1%, 0);
                   }
                 }
 
-                @keyframes bw-scrub {
+                @keyframes pill-drift-b {
                   0% {
-                    transform: translate3d(-3%, 2%, 0) rotate(3deg);
-                    opacity: 0.55;
+                    background-position: 0% 0%;
+                    transform: translate3d(1%, -1%, 0);
+                    opacity: 0.45;
+                  }
+                  50% {
+                    background-position: 80% 30%;
+                    transform: translate3d(-1%, 1%, 0);
+                    opacity: 0.75;
                   }
                   100% {
-                    transform: translate3d(4%, -3%, 0) rotate(-7deg);
-                    opacity: 0.9;
+                    background-position: 20% 90%;
+                    transform: translate3d(0.5%, -0.6%, 0);
+                    opacity: 0.6;
                   }
                 }
               `}</style>
