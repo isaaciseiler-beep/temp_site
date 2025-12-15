@@ -1,46 +1,38 @@
+/* app/globals.css — DROP-IN REPLACEMENT */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* baseline */
 :root {
   color-scheme: dark;
 }
 
-html, body {
+html,
+body {
   height: 100%;
+  overflow: hidden; /* no page scroll */
 }
 
 body {
-  background: #4053d4;
-  color: #ffffff;
+  margin: 0;
+  background: #4053d4; /* solid */
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* background layer: solid + subtle light/shade + noise */
-.bg-hero {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  background: #4053d4;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-.bg-hero::before,
-.bg-hero::after {
-  content: none;
-  display: none;
+/* footer accent font (kept from prior version) */
+@layer utilities {
+  .font-art {
+    font-family: ui-rounded, "SF Pro Rounded", ui-sans-serif, system-ui, -apple-system,
+      "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  }
 }
-
-/* nice selection */
-::selection {
-  background: rgba(255, 255, 255, 0.22);
-}
-
-/* reduce tap highlight */
-* {
-  -webkit-tap-highlight-color: transparent;
-}
-
 
 /* type helpers */
 .font-art {
