@@ -1,4 +1,3 @@
-// components/Menu.tsx — DROP-IN REPLACEMENT
 "use client";
 
 import { useState } from "react";
@@ -53,13 +52,12 @@ export default function Menu() {
     "appearance-none bg-transparent border-0 outline-none ring-0 focus:outline-none focus:ring-0";
   const header =
     "font-sans font-normal tracking-[-0.02em] text-white text-left";
-  // 25% bigger than prior (lg/xl range). also aligns left.
-  const size = "text-xl sm:text-2xl leading-snug";
+  const size = "text-xl sm:text-2xl leading-snug"; // ~25% bigger
   const hit = "py-3 sm:py-4 w-full";
 
   return (
     <div className="w-full h-[100svh] flex items-center justify-center">
-      {/* consistent “healthy buffer” for everything */}
+      {/* consistent buffer for logo/menu/pill */}
       <div className="w-full max-w-xl px-6 sm:px-10">
         <ul className="w-full space-y-3">
           {/* bio (expand) */}
@@ -119,7 +117,7 @@ export default function Menu() {
                     <a
                       href="/resume.pdf"
                       download
-                      className={[header, "group inline-block"].join(" ")}
+                      className={[header, "group inline-flex items-center"].join(" ")}
                     >
                       <UnderlineLabel>download resume (pdf)</UnderlineLabel>
                     </a>
@@ -129,10 +127,10 @@ export default function Menu() {
             </AnimatePresence>
           </li>
 
-          {/* linkedin (direct link) */}
+          {/* linkedin (direct link, no expand) */}
           <li className="w-full flex flex-col items-start">
             <a
-              className={[hit, header, size, "group"].join(" ")}
+              className={[hit, header, size, "group inline-flex items-center"].join(" ")}
               href="https://www.linkedin.com/in/isaacseiler/"
               target="_blank"
               rel="noreferrer"
@@ -142,10 +140,10 @@ export default function Menu() {
             </a>
           </li>
 
-          {/* contact (direct mailto) */}
+          {/* contact (direct mailto, no expand) */}
           <li className="w-full flex flex-col items-start">
             <a
-              className={[hit, header, size, "group"].join(" ")}
+              className={[hit, header, size, "group inline-flex items-center"].join(" ")}
               href="mailto:isaacseiler@gmail.com"
             >
               <UnderlineLabel>Contact</UnderlineLabel>
@@ -153,45 +151,44 @@ export default function Menu() {
             </a>
           </li>
 
-          {/* pill */}
-          <li className="w-full pt-3">
+          {/* pill (continuous rainbow while hovered) */}
+          <li className="w-full pt-4">
             <a
               href="#"
-              className={[
-                "group inline-flex items-center justify-center",
-                "rounded-full px-5 py-2.5",
-                "bg-white text-[#4053d4]",
-                "font-sans font-semibold tracking-[0.12em]",
-                "text-xs sm:text-sm uppercase",
-                "select-none",
-                "relative overflow-hidden",
-              ].join(" ")}
               onClick={(e) => e.preventDefault()}
+              className={[
+                "group relative inline-flex items-center justify-center",
+                "rounded-full px-6 py-3",
+                "bg-white text-[#4053d4]",
+                "font-sans font-semibold tracking-[0.14em]",
+                "text-xs sm:text-sm uppercase",
+                "overflow-hidden select-none",
+              ].join(" ")}
             >
-              {/* rainbow hover layer */}
               <span
                 aria-hidden
-                className={[
-                  "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300",
-                  "bg-[linear-gradient(90deg,#ff3b30,#ff9500,#ffd60a,#34c759,#00c7ff,#5856d6,#ff2d55)]",
-                  "bg-[length:220%_220%]",
-                ].join(" ")}
-              />
-              <motion.span
-                aria-hidden
-                className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                initial={false}
-                animate={{ backgroundPositionX: ["0%", "100%"] }}
-                transition={{ duration: 2.2, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                 style={{
                   backgroundImage:
                     "linear-gradient(90deg,#ff3b30,#ff9500,#ffd60a,#34c759,#00c7ff,#5856d6,#ff2d55)",
-                  backgroundSize: "220% 220%",
+                  backgroundSize: "300% 300%",
+                  animation: "rainbow-move 2.5s linear infinite",
                 }}
               />
               <span className="relative z-10 group-hover:text-white transition-colors duration-200">
                 NEW SITE COMING SOON
               </span>
+
+              <style jsx>{`
+                @keyframes rainbow-move {
+                  0% {
+                    background-position: 0% 50%;
+                  }
+                  100% {
+                    background-position: 100% 50%;
+                  }
+                }
+              `}</style>
             </a>
           </li>
         </ul>
