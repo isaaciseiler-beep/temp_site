@@ -1,14 +1,29 @@
+// components/Menu.tsx — DROP-IN REPLACEMENT
 "use client";
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-type Key = "bio" | "resume" | null;
+type Key = "bio" | null;
 
 const EASE_OUT = [0.2, 1, 0.2, 1] as const;
 
 const bioHtml =
   "I&apos;m Isaac, a recent graduate of Washington University in St. Louis, Fulbright and Truman Scholar, and Member of ChatGPT Lab at OpenAI. I&apos;ve directed a communications program on Capitol Hill, published work through OpenAI, set up a congressional office, run my own consultancy, and run AI workshops for educators. I&apos;m currently in the market for tech roles starting summer 2026.";
+
+const list = {
+  hidden: { opacity: 0, y: 10 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, ease: EASE_OUT, staggerChildren: 0.06, delayChildren: 0.08 },
+  },
+};
+
+const row = {
+  hidden: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_OUT } },
+};
 
 function UnderlineLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -57,9 +72,9 @@ export default function Menu() {
   return (
     <div className="w-full h-[100svh] flex items-center justify-center">
       <div className="w-full max-w-xl px-6 sm:px-10">
-        <ul className="w-full space-y-3">
-          {/* bio */}
-          <li className="w-full flex flex-col items-start">
+        <motion.ul className="w-full space-y-3" variants={list} initial="hidden" animate="show">
+          {/* bio (expand only) */}
+          <motion.li variants={row} className="w-full flex flex-col items-start">
             <button
               type="button"
               className={[reset, hit, header, size, "group"].join(" ")}
@@ -89,44 +104,22 @@ export default function Menu() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </li>
+          </motion.li>
 
-          {/* resume */}
-          <li className="w-full flex flex-col items-start">
-            <button
-              type="button"
-              className={[reset, hit, header, size, "group"].join(" ")}
-              onClick={() => setOpen(open === "resume" ? null : "resume")}
+          {/* resume (direct download) */}
+          <motion.li variants={row} className="w-full flex flex-col items-start">
+            <a
+              className={[hit, header, size, "group inline-flex items-center"].join(" ")}
+              href="/resume.pdf"
+              download
             >
               <UnderlineLabel>Resume</UnderlineLabel>
-            </button>
-
-            <AnimatePresence initial={false}>
-              {open === "resume" && (
-                <motion.div
-                  key="resume"
-                  className="w-full overflow-hidden"
-                  initial={{ height: 0, opacity: 0, y: -8 }}
-                  animate={{ height: "auto", opacity: 1, y: 0 }}
-                  exit={{ height: 0, opacity: 0, y: -8 }}
-                  transition={{ duration: 0.28, ease: EASE_OUT }}
-                >
-                  <div className="pt-2 pb-4">
-                    <a
-                      href="/resume.pdf"
-                      download
-                      className={[header, "group inline-flex items-center"].join(" ")}
-                    >
-                      <UnderlineLabel>download resume (pdf)</UnderlineLabel>
-                    </a>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </li>
+              <ArrowNE />
+            </a>
+          </motion.li>
 
           {/* linkedin */}
-          <li className="w-full flex flex-col items-start">
+          <motion.li variants={row} className="w-full flex flex-col items-start">
             <a
               className={[hit, header, size, "group inline-flex items-center"].join(" ")}
               href="https://www.linkedin.com/in/isaacseiler/"
@@ -136,10 +129,10 @@ export default function Menu() {
               <UnderlineLabel>LinkedIn</UnderlineLabel>
               <ArrowNE />
             </a>
-          </li>
+          </motion.li>
 
           {/* contact */}
-          <li className="w-full flex flex-col items-start">
+          <motion.li variants={row} className="w-full flex flex-col items-start">
             <a
               className={[hit, header, size, "group inline-flex items-center"].join(" ")}
               href="mailto:isaacseiler@gmail.com"
@@ -147,10 +140,10 @@ export default function Menu() {
               <UnderlineLabel>Contact</UnderlineLabel>
               <ArrowNE />
             </a>
-          </li>
+          </motion.li>
 
-          {/* pill — NOT clickable */}
-          <li className="w-full pt-4">
+          {/* pill — not clickable */}
+          <motion.li variants={row} className="w-full pt-4">
             <div
               className={[
                 "group relative inline-flex items-center justify-center",
@@ -159,10 +152,9 @@ export default function Menu() {
                 "font-sans font-semibold tracking-[0.14em]",
                 "text-xs sm:text-sm uppercase",
                 "overflow-hidden select-none",
-                "pointer-events-none", // key change
+                "pointer-events-none",
               ].join(" ")}
             >
-              {/* hover-only animated background */}
               <motion.div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100"
@@ -212,8 +204,8 @@ export default function Menu() {
                 }
               `}</style>
             </div>
-          </li>
-        </ul>
+          </motion.li>
+        </motion.ul>
       </div>
     </div>
   );
