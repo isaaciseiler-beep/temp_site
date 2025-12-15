@@ -3,11 +3,20 @@
 
 import BrandMark from "./BrandMark";
 
+// resting-state only: no boot overlay, no fill animation, no sidebar controls
+// matches the reference feel by using the same scale and top-left transform origin
+const LOGO_SCALE = 1.5;
+
 export default function Brand() {
   return (
-    <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 select-none">
-      <div className="text-3xl sm:text-4xl leading-none">
-        <BrandMark />
+    <div className="fixed inset-x-0 top-0 z-50 pointer-events-none">
+      <div className="flex justify-center pt-8">
+        <div
+          className="pointer-events-none"
+          style={{ transform: `scale(${LOGO_SCALE})`, transformOrigin: "top center" }}
+        >
+          <BrandMark />
+        </div>
       </div>
     </div>
   );
