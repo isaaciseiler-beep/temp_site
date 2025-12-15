@@ -1,4 +1,3 @@
-// components/Menu.tsx — DROP-IN REPLACEMENT
 "use client";
 
 import { useState } from "react";
@@ -150,75 +149,68 @@ export default function Menu() {
             </a>
           </li>
 
-          {/* pill: hover-only NowStatus-style waves (white/light gray) */}
+          {/* pill — NOT clickable */}
           <li className="w-full pt-4">
-            <div className="group relative inline-flex">
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                className={[
-                  "relative overflow-hidden rounded-full",
-                  "px-6 py-3",
-                  "bg-white text-black",
-                  "font-sans font-semibold tracking-[0.14em]",
-                  "text-xs sm:text-sm uppercase",
-                  "select-none",
-                ].join(" ")}
+            <div
+              className={[
+                "group relative inline-flex items-center justify-center",
+                "rounded-full px-6 py-3",
+                "bg-white text-black",
+                "font-sans font-semibold tracking-[0.14em]",
+                "text-xs sm:text-sm uppercase",
+                "overflow-hidden select-none",
+                "pointer-events-none", // key change
+              ].join(" ")}
+            >
+              {/* hover-only animated background */}
+              <motion.div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100"
+                initial={false}
+                animate={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
               >
-                {/* hover-only animated background */}
                 <motion.div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100"
-                  initial={false}
-                  animate={{ opacity: 0 }} // baseline
-                  transition={{ duration: 0.2 }}
-                >
-                  {/* left-to-right soft wave (light) */}
-                  <motion.div
-                    className="absolute -inset-8"
-                    style={{
-                      background:
-                        "radial-gradient(140% 220% at 0% 60%, rgba(255,255,255,0.55), transparent 65%)",
-                      filter: "blur(18px)",
-                    }}
-                    initial={{ x: "-18%" }}
-                    animate={{ x: ["-18%", "26%"] }}
-                    transition={{
-                      duration: 14,
-                      repeat: Infinity,
-                      repeatType: "mirror",
-                      ease: "easeInOut",
-                    }}
-                  />
-                  {/* secondary diagonal wave (light gray) */}
-                  <motion.div
-                    className="absolute -inset-10"
-                    style={{
-                      background:
-                        "radial-gradient(130% 210% at 100% 40%, rgba(0,0,0,0.08), transparent 65%)",
-                      filter: "blur(20px)",
-                    }}
-                    initial={{ x: "20%", y: "-6%" }}
-                    animate={{ x: ["20%", "-10%"], y: ["-6%", "6%"] }}
-                    transition={{
-                      duration: 16,
-                      repeat: Infinity,
-                      repeatType: "mirror",
-                      ease: "easeInOut",
-                    }}
-                  />
-                </motion.div>
+                  className="absolute -inset-8"
+                  style={{
+                    background:
+                      "radial-gradient(140% 220% at 0% 60%, rgba(255,255,255,0.55), transparent 65%)",
+                    filter: "blur(18px)",
+                  }}
+                  initial={{ x: "-18%" }}
+                  animate={{ x: ["-18%", "26%"] }}
+                  transition={{
+                    duration: 14,
+                    repeat: Infinity,
+                    repeatType: "mirror",
+                    ease: "easeInOut",
+                  }}
+                />
+                <motion.div
+                  className="absolute -inset-10"
+                  style={{
+                    background:
+                      "radial-gradient(130% 210% at 100% 40%, rgba(0,0,0,0.08), transparent 65%)",
+                    filter: "blur(20px)",
+                  }}
+                  initial={{ x: "20%", y: "-6%" }}
+                  animate={{ x: ["20%", "-10%"], y: ["-6%", "6%"] }}
+                  transition={{
+                    duration: 16,
+                    repeat: Infinity,
+                    repeatType: "mirror",
+                    ease: "easeInOut",
+                  }}
+                />
+              </motion.div>
 
-                {/* ensures hover shows animation without affecting label */}
-                <span className="relative z-10">NEW SITE COMING SOON</span>
+              <span className="relative z-10">NEW SITE COMING SOON</span>
 
-                {/* set opacity on hover without restarting animations */}
-                <style jsx>{`
-                  .group:hover a > div[aria-hidden="true"] {
-                    opacity: 1 !important;
-                  }
-                `}</style>
-              </a>
+              <style jsx>{`
+                .group:hover div[aria-hidden="true"] {
+                  opacity: 1 !important;
+                }
+              `}</style>
             </div>
           </li>
         </ul>
