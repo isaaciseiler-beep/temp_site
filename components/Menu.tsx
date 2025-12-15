@@ -5,33 +5,73 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 type Key = "bio" | "resume" | null;
-const EASE = [0.2, 1, 0.2, 1] as const;
+
+const EASE_OUT = [0.2, 1, 0.2, 1] as const;
 
 const bioHtml =
   "I&apos;m Isaac, a recent graduate of Washington University in St. Louis, Fulbright and Truman Scholar, and Member of ChatGPT Lab at OpenAI. I&apos;ve directed a communications program on Capitol Hill, published work through OpenAI, set up a congressional office, run my own consultancy, and run AI workshops for educators. I&apos;m currently in the market for tech roles starting summer 2026.";
 
+function UnderlineLabel({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <span className="relative inline-block">
+      <span>{children}</span>
+      <span
+        aria-hidden
+        className={[
+          "pointer-events-none absolute left-0 -bottom-1 h-[2px] w-full",
+          "origin-left scale-x-0",
+          "bg-white/95",
+          "transition-transform duration-[420ms]",
+          "[transition-timing-function:cubic-bezier(0.2,1,0.2,1)]",
+          "group-hover:scale-x-100",
+        ].join(" ")}
+      />
+    </span>
+  );
+}
+
+function ArrowNE() {
+  return (
+    <span
+      aria-hidden
+      className={[
+        "ml-2 inline-block select-none",
+        "transition-transform duration-[420ms]",
+        "[transition-timing-function:cubic-bezier(0.2,1,0.2,1)]",
+        "group-hover:-translate-y-[2px] group-hover:translate-x-[2px]",
+      ].join(" ")}
+    >
+      ↗
+    </span>
+  );
+}
+
 export default function Menu() {
   const [open, setOpen] = useState<Key>(null);
 
-  const btnReset =
-    "w-full bg-transparent border-0 p-0 m-0 appearance-none outline-none ring-0 focus:outline-none focus:ring-0";
-  const headerText =
-    "font-sans font-normal text-white text-center tracking-[-0.02em]"; // match logo “slightly closer”
-  const headerSize = "text-lg sm:text-xl leading-snug";
-  const hit = "py-3 sm:py-4";
+  const reset =
+    "appearance-none bg-transparent border-0 outline-none ring-0 focus:outline-none focus:ring-0";
+  const header =
+    "font-sans font-normal tracking-[-0.02em] text-white text-center";
+  const size = "text-lg sm:text-xl leading-snug";
+  const hit = "py-3 sm:py-4 w-full";
 
   return (
-    <div className="w-full flex items-center justify-center">
+    <div className="w-full h-[100svh] flex items-center justify-center">
       <div className="w-full max-w-xl px-6">
         <ul className="w-full space-y-3">
           {/* bio (expand) */}
           <li className="w-full flex flex-col items-center">
             <button
               type="button"
-              className={[btnReset, hit, headerText, headerSize].join(" ")}
+              className={[reset, hit, header, size, "group"].join(" ")}
               onClick={() => setOpen(open === "bio" ? null : "bio")}
             >
-              Bio
+              <UnderlineLabel>Bio</UnderlineLabel>
             </button>
 
             <AnimatePresence initial={false}>
@@ -39,16 +79,18 @@ export default function Menu() {
                 <motion.div
                   key="bio"
                   className="w-full overflow-hidden"
-                  initial={{ height: 0, opacity: 0, y: -6 }}
+                  initial={{ height: 0, opacity: 0, y: -8 }}
                   animate={{ height: "auto", opacity: 1, y: 0 }}
-                  exit={{ height: 0, opacity: 0, y: -6 }}
-                  transition={{ duration: 0.26, ease: EASE }}
+                  exit={{ height: 0, opacity: 0, y: -8 }}
+                  transition={{ duration: 0.28, ease: EASE_OUT }}
                 >
                   <div className="pt-1 pb-4">
-                    <p
-                      className="font-sans tracking-normal text-white/90 text-center text-sm sm:text-base leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: bioHtml }}
-                    />
+                    <div className="mx-auto max-w-[46ch]">
+                      <p
+                        className="font-sans tracking-normal text-white/90 text-center text-sm sm:text-base leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: bioHtml }}
+                      />
+                    </div>
                   </div>
                 </motion.div>
               )}
@@ -59,10 +101,10 @@ export default function Menu() {
           <li className="w-full flex flex-col items-center">
             <button
               type="button"
-              className={[btnReset, hit, headerText, headerSize].join(" ")}
+              className={[reset, hit, header, size, "group"].join(" ")}
               onClick={() => setOpen(open === "resume" ? null : "resume")}
             >
-              Resume
+              <UnderlineLabel>Resume</UnderlineLabel>
             </button>
 
             <AnimatePresence initial={false}>
@@ -70,18 +112,18 @@ export default function Menu() {
                 <motion.div
                   key="resume"
                   className="w-full overflow-hidden"
-                  initial={{ height: 0, opacity: 0, y: -6 }}
+                  initial={{ height: 0, opacity: 0, y: -8 }}
                   animate={{ height: "auto", opacity: 1, y: 0 }}
-                  exit={{ height: 0, opacity: 0, y: -6 }}
-                  transition={{ duration: 0.26, ease: EASE }}
+                  exit={{ height: 0, opacity: 0, y: -8 }}
+                  transition={{ duration: 0.28, ease: EASE_OUT }}
                 >
                   <div className="pt-2 pb-4 flex items-center justify-center">
                     <a
                       href="/resume.pdf"
                       download
-                      className="font-sans tracking-normal text-white underline underline-offset-4 decoration-white/60 hover:decoration-white transition"
+                      className={[header, "group"].join(" ")}
                     >
-                      download resume (pdf)
+                      <UnderlineLabel>download resume (pdf)</UnderlineLabel>
                     </a>
                   </div>
                 </motion.div>
@@ -89,29 +131,27 @@ export default function Menu() {
             </AnimatePresence>
           </li>
 
-          {/* linkedin (direct link) */}
+          {/* linkedin (direct link, no expand) */}
           <li className="w-full flex flex-col items-center">
             <a
-              className={[hit, headerText, headerSize, "no-underline hover:opacity-90 transition"].join(
-                " "
-              )}
+              className={[hit, header, size, "group"].join(" ")}
               href="https://www.linkedin.com/in/isaacseiler/"
               target="_blank"
               rel="noreferrer"
             >
-              LinkedIn
+              <UnderlineLabel>LinkedIn</UnderlineLabel>
+              <ArrowNE />
             </a>
           </li>
 
-          {/* contact (direct mailto) */}
+          {/* contact (direct mailto, no expand) */}
           <li className="w-full flex flex-col items-center">
             <a
-              className={[hit, headerText, headerSize, "no-underline hover:opacity-90 transition"].join(
-                " "
-              )}
+              className={[hit, header, size, "group"].join(" ")}
               href="mailto:isaacseiler@gmail.com"
             >
-              Contact
+              <UnderlineLabel>Contact</UnderlineLabel>
+              <ArrowNE />
             </a>
           </li>
         </ul>
@@ -119,3 +159,4 @@ export default function Menu() {
     </div>
   );
 }
+
