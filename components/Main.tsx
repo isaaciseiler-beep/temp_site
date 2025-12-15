@@ -8,17 +8,10 @@ export default function Main() {
   return (
     <main className="min-h-[100svh]">
       <Brand />
+      <Menu />
 
-      <div className="px-6">
-        <div className="mx-auto max-w-xl min-h-[100svh] grid place-items-center">
-          <Menu />
-        </div>
-
-        <div className="pb-10 pt-2 text-center">
-          <span className="font-art text-[#39ff14] uppercase italic tracking-wide">
-            new site coming soon
-          </span>
-        </div>
+      <div className="fixed bottom-4 left-6 z-50 select-none font-sans text-xs tracking-tight text-white/60">
+        © 2025 Isaac Seiler
       </div>
     </main>
   );
