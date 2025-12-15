@@ -9,7 +9,7 @@ type Key = "bio" | null;
 const EASE_OUT = [0.2, 1, 0.2, 1] as const;
 
 const bioHtml =
-  "I&apos;m Isaac, a recent graduate of Washington University in St. Louis, Fulbright and Truman Scholar, and Member of ChatGPT Lab at OpenAI. I&apos;ve directed a communications program on Capitol Hill, published work through OpenAI, set up a congressional office, run my own consultancy, and run AI workshops for educators. I&apos;m currently in the market for tech roles starting summer 2026.";
+  "I&apos;m Isaac, a recent graduate of Washington University in St. Louis, Fulbright and Truman Scholar, and Member of ChatGPT Lab at OpenAI. I&apos;ve directed a communications program on Capitol Hill, published work through OpenAI, set up a congressional office, run my own consultancy, and conducted AI workshops for educators. I&apos;m currently in the market for tech roles starting summer 2026.";
 
 const list = {
   hidden: { opacity: 0, y: 10 },
