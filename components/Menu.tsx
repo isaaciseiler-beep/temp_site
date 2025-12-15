@@ -52,15 +52,13 @@ export default function Menu() {
     "appearance-none bg-transparent border-0 outline-none ring-0 focus:outline-none focus:ring-0";
   const header =
     "font-sans font-normal tracking-[-0.02em] text-white text-left";
-  const size = "text-xl sm:text-2xl leading-snug"; // ~25% bigger
+  const size = "text-xl sm:text-2xl leading-snug";
   const hit = "py-3 sm:py-4 w-full";
 
   return (
     <div className="w-full h-[100svh] flex items-center justify-center">
-      {/* consistent buffer for logo/menu/pill */}
       <div className="w-full max-w-xl px-6 sm:px-10">
         <ul className="w-full space-y-3">
-          {/* bio (expand) */}
           <li className="w-full flex flex-col items-start">
             <button
               type="button"
@@ -93,7 +91,6 @@ export default function Menu() {
             </AnimatePresence>
           </li>
 
-          {/* resume (expand) */}
           <li className="w-full flex flex-col items-start">
             <button
               type="button"
@@ -127,7 +124,6 @@ export default function Menu() {
             </AnimatePresence>
           </li>
 
-          {/* linkedin (direct link, no expand) */}
           <li className="w-full flex flex-col items-start">
             <a
               className={[hit, header, size, "group inline-flex items-center"].join(" ")}
@@ -140,7 +136,6 @@ export default function Menu() {
             </a>
           </li>
 
-          {/* contact (direct mailto, no expand) */}
           <li className="w-full flex flex-col items-start">
             <a
               className={[hit, header, size, "group inline-flex items-center"].join(" ")}
@@ -151,7 +146,7 @@ export default function Menu() {
             </a>
           </li>
 
-          {/* pill (continuous rainbow while hovered) */}
+          {/* pill: black/white dynamic shimmer on hover (non-linear, multi-direction) */}
           <li className="w-full pt-4">
             <a
               href="#"
@@ -159,33 +154,71 @@ export default function Menu() {
               className={[
                 "group relative inline-flex items-center justify-center",
                 "rounded-full px-6 py-3",
-                "bg-white text-[#4053d4]",
+                "bg-white text-black",
                 "font-sans font-semibold tracking-[0.14em]",
                 "text-xs sm:text-sm uppercase",
                 "overflow-hidden select-none",
               ].join(" ")}
             >
+              {/* base shimmer: layered conic + radial for “alive” motion */}
               <span
                 aria-hidden
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                className="absolute inset-[-40%] opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                 style={{
-                  backgroundImage:
-                    "linear-gradient(90deg,#ff3b30,#ff9500,#ffd60a,#34c759,#00c7ff,#5856d6,#ff2d55)",
-                  backgroundSize: "300% 300%",
-                  animation: "rainbow-move 2.5s linear infinite",
+                  backgroundImage: `
+                    radial-gradient(circle at 30% 30%, rgba(0,0,0,0.55), transparent 55%),
+                    radial-gradient(circle at 70% 60%, rgba(0,0,0,0.35), transparent 60%),
+                    conic-gradient(from 0deg, rgba(0,0,0,0.65), rgba(255,255,255,0.15), rgba(0,0,0,0.65), rgba(255,255,255,0.1), rgba(0,0,0,0.65))
+                  `,
+                  backgroundBlendMode: "multiply",
+                  filter: "contrast(1.25)",
+                  animation: "bw-drift 3.2s linear infinite",
                 }}
               />
-              <span className="relative z-10 group-hover:text-white transition-colors duration-200">
+
+              {/* subtle grainy sweep layer */}
+              <span
+                aria-hidden
+                className="absolute inset-[-60%] opacity-0 group-hover:opacity-100 transition-opacity duration-200 mix-blend-overlay"
+                style={{
+                  backgroundImage:
+                    "repeating-linear-gradient(135deg, rgba(0,0,0,0.25) 0 6px, rgba(255,255,255,0.10) 6px 12px)",
+                  filter: "blur(0.2px)",
+                  animation: "bw-scrub 2.7s ease-in-out infinite alternate",
+                }}
+              />
+
+              <span className="relative z-10 transition-colors duration-200 group-hover:text-white">
                 NEW SITE COMING SOON
               </span>
 
               <style jsx>{`
-                @keyframes rainbow-move {
+                @keyframes bw-drift {
                   0% {
-                    background-position: 0% 50%;
+                    transform: translate3d(-6%, -4%, 0) rotate(0deg);
+                  }
+                  25% {
+                    transform: translate3d(6%, -2%, 0) rotate(35deg);
+                  }
+                  50% {
+                    transform: translate3d(3%, 6%, 0) rotate(95deg);
+                  }
+                  75% {
+                    transform: translate3d(-5%, 3%, 0) rotate(155deg);
                   }
                   100% {
-                    background-position: 100% 50%;
+                    transform: translate3d(-6%, -4%, 0) rotate(220deg);
+                  }
+                }
+
+                @keyframes bw-scrub {
+                  0% {
+                    transform: translate3d(-3%, 2%, 0) rotate(3deg);
+                    opacity: 0.55;
+                  }
+                  100% {
+                    transform: translate3d(4%, -3%, 0) rotate(-7deg);
+                    opacity: 0.9;
                   }
                 }
               `}</style>
