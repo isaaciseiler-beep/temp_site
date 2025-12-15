@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* baseline */
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: #4053d4;
+  color: #ffffff;
+}
+
+/* background layer: solid + subtle light/shade + noise */
+.bg-hero {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: #4053d4;
+}
+
+.bg-hero::before,
+.bg-hero::after {
+  content: none;
+  display: none;
+}
+
+/* nice selection */
+::selection {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* reduce tap highlight */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* type helpers */
+.font-art {
+  font-family: ui-rounded, "SF Pro Rounded", "Avenir Next", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+}
