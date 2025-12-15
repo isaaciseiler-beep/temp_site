@@ -150,92 +150,76 @@ export default function Menu() {
             </a>
           </li>
 
-          {/* pill: b/w dynamic shimmer (no rotating rectangle) */}
+          {/* pill: hover-only NowStatus-style waves (white/light gray) */}
           <li className="w-full pt-4">
-            <a
-              href="#"
-              onClick={(e) => e.preventDefault()}
-              className={[
-                "group relative inline-flex items-center justify-center",
-                "rounded-full px-6 py-3",
-                "bg-white text-black",
-                "font-sans font-semibold tracking-[0.14em]",
-                "text-xs sm:text-sm uppercase",
-                "overflow-hidden select-none",
-              ].join(" ")}
-            >
-              {/* layer 1: soft blobs + diagonal sheen, animated in x/y */}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                style={{
-                  backgroundImage: `
-                    radial-gradient(circle at 20% 30%, rgba(0,0,0,0.35), transparent 60%),
-                    radial-gradient(circle at 75% 70%, rgba(0,0,0,0.22), transparent 62%),
-                    linear-gradient(115deg, rgba(0,0,0,0.28), rgba(255,255,255,0.18), rgba(0,0,0,0.22))
-                  `,
-                  backgroundSize: "180% 180%, 190% 190%, 240% 240%",
-                  animation: "pill-drift-a 9.7s cubic-bezier(0.2, 1, 0.2, 1) infinite alternate",
-                }}
-              />
+            <div className="group relative inline-flex">
+              <a
+                href="#"
+                onClick={(e) => e.preventDefault()}
+                className={[
+                  "relative overflow-hidden rounded-full",
+                  "px-6 py-3",
+                  "bg-white text-black",
+                  "font-sans font-semibold tracking-[0.14em]",
+                  "text-xs sm:text-sm uppercase",
+                  "select-none",
+                ].join(" ")}
+              >
+                {/* hover-only animated background */}
+                <motion.div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100"
+                  initial={false}
+                  animate={{ opacity: 0 }} // baseline
+                  transition={{ duration: 0.2 }}
+                >
+                  {/* left-to-right soft wave (light) */}
+                  <motion.div
+                    className="absolute -inset-8"
+                    style={{
+                      background:
+                        "radial-gradient(140% 220% at 0% 60%, rgba(255,255,255,0.55), transparent 65%)",
+                      filter: "blur(18px)",
+                    }}
+                    initial={{ x: "-18%" }}
+                    animate={{ x: ["-18%", "26%"] }}
+                    transition={{
+                      duration: 14,
+                      repeat: Infinity,
+                      repeatType: "mirror",
+                      ease: "easeInOut",
+                    }}
+                  />
+                  {/* secondary diagonal wave (light gray) */}
+                  <motion.div
+                    className="absolute -inset-10"
+                    style={{
+                      background:
+                        "radial-gradient(130% 210% at 100% 40%, rgba(0,0,0,0.08), transparent 65%)",
+                      filter: "blur(20px)",
+                    }}
+                    initial={{ x: "20%", y: "-6%" }}
+                    animate={{ x: ["20%", "-10%"], y: ["-6%", "6%"] }}
+                    transition={{
+                      duration: 16,
+                      repeat: Infinity,
+                      repeatType: "mirror",
+                      ease: "easeInOut",
+                    }}
+                  />
+                </motion.div>
 
-              {/* layer 2: fine texture sweep with different period (breaks loop detectability) */}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 mix-blend-multiply"
-                style={{
-                  backgroundImage:
-                    "repeating-linear-gradient(135deg, rgba(0,0,0,0.10) 0 7px, rgba(255,255,255,0.06) 7px 14px)",
-                  backgroundSize: "220% 220%",
-                  animation: "pill-drift-b 13.3s ease-in-out infinite alternate",
-                }}
-              />
+                {/* ensures hover shows animation without affecting label */}
+                <span className="relative z-10">NEW SITE COMING SOON</span>
 
-              <span className="relative z-10">NEW SITE COMING SOON</span>
-
-              <style jsx>{`
-                @keyframes pill-drift-a {
-                  0% {
-                    background-position: 10% 20%, 90% 85%, 0% 50%;
-                    transform: translate3d(-1%, -1%, 0);
+                {/* set opacity on hover without restarting animations */}
+                <style jsx>{`
+                  .group:hover a > div[aria-hidden="true"] {
+                    opacity: 1 !important;
                   }
-                  25% {
-                    background-position: 85% 10%, 20% 80%, 100% 35%;
-                    transform: translate3d(1.2%, -0.6%, 0);
-                  }
-                  50% {
-                    background-position: 30% 95%, 70% 20%, 40% 100%;
-                    transform: translate3d(0.4%, 1.1%, 0);
-                  }
-                  75% {
-                    background-position: 5% 45%, 95% 55%, 70% 0%;
-                    transform: translate3d(-1.1%, 0.6%, 0);
-                  }
-                  100% {
-                    background-position: 75% 80%, 10% 10%, 0% 60%;
-                    transform: translate3d(1%, 1%, 0);
-                  }
-                }
-
-                @keyframes pill-drift-b {
-                  0% {
-                    background-position: 0% 0%;
-                    transform: translate3d(1%, -1%, 0);
-                    opacity: 0.45;
-                  }
-                  50% {
-                    background-position: 80% 30%;
-                    transform: translate3d(-1%, 1%, 0);
-                    opacity: 0.75;
-                  }
-                  100% {
-                    background-position: 20% 90%;
-                    transform: translate3d(0.5%, -0.6%, 0);
-                    opacity: 0.6;
-                  }
-                }
-              `}</style>
-            </a>
+                `}</style>
+              </a>
+            </div>
           </li>
         </ul>
       </div>
